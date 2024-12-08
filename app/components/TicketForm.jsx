@@ -4,6 +4,8 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 const TicketForm = () => {
+    const router = useRouter()
+
 
     const handleChange = (e) => {
         const value = e.target.value
@@ -17,10 +19,26 @@ const TicketForm = () => {
         })
     }
 
-    const handleSubmit = () => {
-        e.preventDefault()
-        console.log("Form Submitted")
-    }
+    const handleSubmit = async (e) => {
+        e.preventDefault(); // Prevent default form submission behavior
+        
+          const res = await fetch('/api/Tickets', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+          });
+    
+          if (!res.ok) {
+            throw new Error('Failed to create ticket');
+          }
+    
+          router.refresh();
+          router.push('/');
+        } 
+    
+    
         
 
     const startingTicketData = {
@@ -75,8 +93,58 @@ const TicketForm = () => {
                 id="priority-1"
                 />
                 <label>1</label>
-            </div>
 
+                <input 
+                type="radio" 
+                name="priority" 
+                value="2" 
+                onChange={handleChange} 
+                checked={formData.priority == 2}
+                id="priority-1"
+                />
+                <label>2</label>
+
+                <input 
+                type="radio" 
+                name="priority" 
+                value="3" 
+                onChange={handleChange} 
+                checked={formData.priority == 3}
+                id="priority-3"
+                />
+                <label>3</label>
+
+                <input 
+                type="radio" 
+                name="priority" 
+                value="4" 
+                onChange={handleChange} 
+                checked={formData.priority == 4}
+                id="priority-4"
+                />
+                <label>4</label>
+
+                <input 
+                type="radio" 
+                name="priority" 
+                value="5" 
+                onChange={handleChange} 
+                checked={formData.priority == 5}
+                id="priority-5"
+                />
+                <label>5</label>
+
+
+            </div>
+                <label htmlFor="">Progress</label>
+                <input type='range' name='progress' value={formData.progress} onChange={handleChange} id='progress' min='0' max='100' />
+                <label htmlFor="">Status</label>
+                <select name="status" value={formData.status} onChange={handleChange} id="">
+                    <option value="not started">Not Started</option>
+                    <option value="in progress">In Progress</option>
+                    <option value="done">Done</option>
+                </select>
+                <input type="submit" className='btn' value="Create Ticket" />
         </form>
     </div>
   )
