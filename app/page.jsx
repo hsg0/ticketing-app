@@ -32,7 +32,7 @@ const uniqueCategories = [...new Set(tickets?.map(({ category }) => category)),
 
             <div className='lg:grid grid-cols-2 xl:grid-cols-4 '>
             {tickets.filter(ticket => ticket.category === uniqueCategory).map((filteredTicket, _index) => (
-              <TicketCard ticket={tickets} id={_index} key={_index} />
+              <TicketCard ticket={filteredTicket} id={_index} key={_index} />
             ))}
           </div>
         </div>
